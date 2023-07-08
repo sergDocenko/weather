@@ -11,6 +11,7 @@
   color: var(--color-white);
   cursor: pointer;
   background-color: var(--gray);
+  padding: 1rem 1.6rem;
 }
 
 .dropdown__head {
@@ -25,12 +26,13 @@
   transform: rotate(0.25turn);
 }
 .dropdown__placeholder {
-  padding: 1.1rem 1.6rem;
+  
   width: 100%;
   box-sizing: border-box;
 }
 .dropdown__list {
   background-color: var(--gray);
+  z-index: 100;
   list-style: none;
   position: absolute;
   display: none;
@@ -39,10 +41,11 @@
   padding: 0;
   padding-top: 2rem;
   top: 100%;
+  left: -1px;
+  right: -1px;
   border-radius: var(--border-radius);
   box-sizing: inherit;
   max-height: 17rem;
-  width: 100%;
   overflow-y: auto;
 }
 .dropdown__list::-webkit-scrollbar {
