@@ -1,95 +1,79 @@
-import Image from 'next/image'
-import styles from './page.module.css'
+import countriesData from "../countries.json";
+import citiesData from "../cities.json";
+import { WeatherTable } from "./components/WeatherTable/WeatherTable";
+import styles from "./page.module.css";
+import { CityData, CityWeatherData, FetchDefaultParams } from "./types";
+import {
+  getNormalizeDate,
+  getAllCities,
+  getPreviosDate,
+  getURL,
+  parseCityData,
+} from "./utils";
 
-export default function Home() {
+const baseURL = `https://api.open-meteo.com/v1/forecast`;
+const defaultParam: FetchDefaultParams = {
+  daily: "temperature_2m_max,temperature_2m_min,winddirection_10m_dominant",
+  timezone: "GMT",
+  end_date: getNormalizeDate(new Date()),
+};
+
+export default async function Home() {
+  // const weather = await fetchCityData("IT", baseURL, {
+  //   latitude: "54.5049",
+  //   longitude: "24.8208",
+  // });
+  const allCitiesWeatherData = await fetchAllCitiesData(citiesData, baseURL, 0);
+
+  // console.log(allCitiesWeatherData);
+
   return (
     <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore the Next.js 13 playground.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
+      <WeatherTable
+        countries={countriesData}
+        citiesWeatherData={allCitiesWeatherData}
+      ></WeatherTable>
     </main>
-  )
+  );
+}
+
+async function fetchAllCitiesData(
+  cities: CityData[],
+  baseURL: string,
+  dayCount: number,
+  defaultParams?: FetchDefaultParams
+) {
+  const requestsPromises = cities.map((cityData: CityData) => {
+    return fetchCityData(
+      cityData.city,
+      cityData.countryCode,
+      baseURL,
+      {
+        latitude: cityData.location.latitude,
+        longitude: cityData.location.longitude,
+      },
+      defaultParams,
+      dayCount
+    );
+  });
+  return Promise.all(requestsPromises);
+}
+
+async function fetchCityData(
+  cityName: string,
+  countryCode:string,
+  baseURL: string,
+  params: { latitude: string; longitude: string },
+  defaultParams: FetchDefaultParams = {
+    ...defaultParam,
+  },
+  dayCount: number = 6
+): Promise<CityWeatherData> {
+  defaultParams.start_date = getPreviosDate(dayCount);
+
+  const url = getURL(baseURL, { ...params, ...defaultParams });
+  const response = await fetch(url.href);
+  const jsonRes = await response.json();
+
+  return {city:cityName,countryCode, ...parseCityData(jsonRes) };
 }

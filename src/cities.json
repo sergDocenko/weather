@@ -1,0 +1,60 @@
+[
+  {
+    "countryCode": "UA",
+    "city": "Odessa",
+    "location": {
+      "latitude": "46.2910",
+      "longitude": "30.4340"
+    }
+  },
+  {
+    "countryCode": "UA",
+    "city": "Kiev",
+    "location": {
+      "latitude": "50.27",
+      "longitude": "30.31"
+    }
+  },
+  {
+    "countryCode": "UA",
+    "city": "Dnipro",
+    "location": {
+      "latitude": "48.28",
+      "longitude": "31.0105"
+    }
+  },
+
+  {
+    "countryCode": "IT",
+    "city": "Milan",
+    "location": {
+      "latitude": "45.28",
+      "longitude": "09.10"
+    }
+  },
+  {
+    "countryCode": "IT",
+    "city": "Rome",
+    "location": {
+      "latitude": "41.54",
+      "longitude": "12.30"
+    }
+  },
+
+  {
+    "countryCode": "ES",
+    "city": "Madrid",
+    "location": {
+      "latitude": "40.24",
+      "longitude": "3.41"
+    }
+  },
+  {
+    "countryCode": "ES",
+    "city": "Barcelona",
+    "location": {
+      "latitude": "41.23",
+      "longitude": "02.11"
+    }
+  }
+]
