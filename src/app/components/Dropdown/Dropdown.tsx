@@ -18,6 +18,7 @@ type DropdownProps = {
   multiple?: boolean;
   search?: boolean;
   onChange?: (selectedOptions: DropdownOption[]) => void;
+  selectedProp?: DropdownOption[];
 };
 
 export const Dropdown: FC<DropdownProps> = ({
@@ -26,9 +27,10 @@ export const Dropdown: FC<DropdownProps> = ({
   multiple = false,
   search = false,
   onChange,
+  selectedProp = [],
 }) => {
   const [active, setActive] = useState(false);
-  const [selected, setSelected] = useState<any[]>([]);
+  const [selected, setSelected] = useState<DropdownOption[]>(selectedProp);
   const dropdownRef = useRef<any>(null);
   const inputRef = useRef<any>(null);
   const [filterValue, setFilterValue] = useState("");
@@ -75,7 +77,9 @@ export const Dropdown: FC<DropdownProps> = ({
   }
 
   function handleSelectMultipleItems(option: DropdownOption) {
-    if (selected.includes(option)) {
+    if (
+      selected.find((optionSelected) => option.value === optionSelected.value)
+    ) {
       setSelected(
         selected.filter((selectedOption) => selectedOption !== option)
       );
@@ -125,7 +129,9 @@ export const Dropdown: FC<DropdownProps> = ({
           options.map((option, index) => {
             const className = clsx({
               [styles["dropdown__list-item"]]: true,
-              [styles["dropdown__list-item_active"]]: selected.includes(option),
+              [styles["dropdown__list-item_active"]]: selected.find(
+                (optionSelected) => option.value === optionSelected.value
+              ),
             });
             return (
               <li

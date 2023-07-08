@@ -21,8 +21,9 @@ const optionsMock = [
 export default function Sandbox() {
   return (
     <>
+     <Dropdown options={[]} />
       <Dropdown options={optionsMock} placeholder="Country" />
-      <Dropdown options={[]} />
+     
     </>
   );
 }

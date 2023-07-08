@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import { getOptionsFromRange } from "@/app/utils";
+import type { DropdownOption } from "@/app/types";
 
-export const minMaxConf = {
+ const minMaxConf = {
   min: -80,
   max: 80,
 };
@@ -14,9 +16,18 @@ export function useTemperature() {
     if (temperature > minMaxTemperature.min)
       setMinMaxTemperature({ ...minMaxTemperature, max: temperature });
   }
+
+  function getMinTemperatureOptions(): DropdownOption[] {
+    return getOptionsFromRange(minMaxConf.min, minMaxTemperature.max - 1);
+  }
+  function getMaxTemperatureOptions(): DropdownOption[] {
+    return getOptionsFromRange(minMaxTemperature.min + 1, minMaxConf.max);
+  }
   return {
     handleSetMaxTemperature,
     handleSetMinTemperature,
+    getMinTemperatureOptions,
+    getMaxTemperatureOptions,
     minMaxTemperature,
   };
 }

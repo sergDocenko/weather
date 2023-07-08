@@ -1,4 +1,6 @@
-.actions{
-    display: flex;
-    gap :10px;
-  }
+.actions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  width: 100%;
+  gap: 1rem;
+}

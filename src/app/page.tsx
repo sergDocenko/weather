@@ -4,8 +4,7 @@ import { WeatherTable } from "./components/WeatherTable/WeatherTable";
 import styles from "./page.module.css";
 import { CityData, CityWeatherData, FetchDefaultParams } from "./types";
 import {
-  getNormalizeDate,
-  getAllCities,
+  getNormalizeDate, 
   getPreviosDate,
   getURL,
   parseCityData,

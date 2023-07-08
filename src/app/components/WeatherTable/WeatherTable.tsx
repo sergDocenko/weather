@@ -6,14 +6,12 @@ import type {
   CountryData,
   DropdownOption,
 } from "../../types";
-import { getArrayFromRange } from "../../utils";
-import { Select } from "../Select/Select";
+import { Dropdown } from "../Dropdown/Dropdown";
 import { Actions } from "./componets/Actions/Actions";
 import { Table } from "./componets/Table/Table";
-import { temperatureFilter, countryFilter } from "./filters";
-import { useTemperature, minMaxConf } from "./hooks/useTemperature";
+import { countryFilter, temperatureFilter } from "./filters";
+import { useTemperature } from "./hooks/useTemperature";
 import styles from "./weatherTable.module.css";
-import { Dropdown } from "../Dropdown/Dropdown";
 
 type WeatherTableProp = {
   children?: React.ReactNode;
@@ -30,6 +28,8 @@ export const WeatherTable: FC<WeatherTableProp> = ({
     minMaxTemperature,
     handleSetMaxTemperature,
     handleSetMinTemperature,
+    getMaxTemperatureOptions,
+    getMinTemperatureOptions,
   } = useTemperature();
 
   const [selectedCountries, setSelectedCountries] =
@@ -49,6 +49,13 @@ export const WeatherTable: FC<WeatherTableProp> = ({
     }
   }
 
+  function handleSelectMinTemperature(option: DropdownOption[]) {
+    handleSetMinTemperature(Number(option[0]?.value));
+  }
+  function handleSelectMaxTemperature(option: DropdownOption[]) {
+    handleSetMaxTemperature(Number(option[0]?.value));
+  }
+
   return (
     <div className={styles.weather_container}>
       <Actions>
@@ -58,21 +65,18 @@ export const WeatherTable: FC<WeatherTableProp> = ({
           multiple={true}
           search={true}
           onChange={handleSelectCountry}
-        />        
-        <Select
-          selectedOption={minMaxTemperature.min}
-          getOptionValue={handleSetMinTemperature}
-          options={getArrayFromRange(minMaxConf.min, minMaxConf.max - 1)}
-          label="Min"
         />
-        <Select
-          selectedOption={minMaxTemperature.max}
-          getOptionValue={handleSetMaxTemperature}
-          options={getArrayFromRange(
-            minMaxConf.min + 1,
-            minMaxConf.max
-          ).reverse()}
-          label="Max"
+        <Dropdown
+          options={getMinTemperatureOptions()}
+          placeholder="Min"
+          search={true}
+          onChange={handleSelectMinTemperature}
+        />
+        <Dropdown
+          options={getMaxTemperatureOptions()}
+          placeholder="Max"
+          search={true}
+          onChange={handleSelectMaxTemperature}
         />
       </Actions>
       <Table citiesWeatherData={allFilters(citiesWeatherData)} />
