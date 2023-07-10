@@ -27,8 +27,9 @@ export const ChartBar: FC<ChartBarProps> = ({
   height = 410,
 }) => {
   const chartData: any = data;
-  chartData.labels = xAxisLabels;
+  chartData.labels = xAxisLabels;  
   chartData.datasets[0].data = barsData;
+console.log(barsData);
 
   return (
     <Bar options={options} data={chartData} width={width} height={height} />

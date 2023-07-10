@@ -21,8 +21,7 @@
 .modal__container__header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  font-family:  Helvetica, sans-serif;
+  justify-content: space-between;  
 }
 .modal__container__header__close {
   background-color: transparent;

@@ -1,7 +1,7 @@
 "use client";
 // import type { DropdownOption } from "@/app/types";
 import clsx from "clsx";
-import {
+import React, {
   FC,
   SyntheticEvent,
   KeyboardEvent,
@@ -23,15 +23,17 @@ type DropdownProps = {
   placeholder?: string;
   multiple?: boolean;
   search?: boolean;
+  className?: string;
   onChange?: (selectedOptions: DropdownOption[]) => void;
   selectedProp?: DropdownOption[];
 };
 
-export const Dropdown: FC<DropdownProps> = ({
+const DropDown: FC<DropdownProps> = ({
   options: optionsProp,
   placeholder = "Select...",
   multiple = false,
   search = false,
+  className: classNameProp,
   onChange,
   selectedProp = [],
 }) => {
@@ -60,6 +62,7 @@ export const Dropdown: FC<DropdownProps> = ({
 
   const className = clsx({
     [styles.dropdown]: true,
+    classNameProp: true,
     [styles.dropdown_active]: active,
   });
 
@@ -72,7 +75,8 @@ export const Dropdown: FC<DropdownProps> = ({
     setActive((prev) => !prev);
   }
 
-  function handleSelectItem(option: DropdownOption, event: SyntheticEvent) {
+  function handleSelectItem(option: DropdownOption, event?: SyntheticEvent) {
+    event && event.stopPropagation();
     let resOptions = null;
     if (multiple) {
       if (
@@ -91,7 +95,6 @@ export const Dropdown: FC<DropdownProps> = ({
     }
     if (onChange) onChange(resOptions);
     setSelected(resOptions);
-    event.stopPropagation();
   }
 
   function renderPlaceholder() {
@@ -109,14 +112,12 @@ export const Dropdown: FC<DropdownProps> = ({
     option.name.includes(filterValue)
   );
 
-  function handleInputKeyDown(e: KeyboardEvent) {
-   
-    if (e.key === "Enter") {
-      const option = optionsProp.find((option) => option.name === filterValue);
-      if (option) {
-        handleSelectItem(option, e);
-        setActive(false);
-      }
+  function handleInputKeyEnter(event: KeyboardEvent) {
+    event.stopPropagation();
+    const option = optionsProp.find((option) => option.name === filterValue);
+    if (option) {
+      handleSelectItem(option);
+      setActive(false);
     }
   }
 
@@ -144,7 +145,7 @@ export const Dropdown: FC<DropdownProps> = ({
               className={styles["dropdown__control-input"]}
               onChange={handleInputChange}
               ref={inputRef}
-              onKeyDown={handleInputKeyDown}
+              onEnter={handleInputKeyEnter}
             />
           </div>
         ) : (
@@ -183,3 +184,4 @@ export const Dropdown: FC<DropdownProps> = ({
     </div>
   );
 };
+export const Dropdown = React.memo(DropDown);

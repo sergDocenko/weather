@@ -8,6 +8,7 @@ type Inputprops = {
   onChange: (event: SyntheticEvent) => void;
   onClick?: (event: SyntheticEvent) => void;
   onKeyDown?: (event: KeyboardEvent) => void;
+  onEnter?: (event: KeyboardEvent) => void;
 };
 
 const Input = (
@@ -16,11 +17,19 @@ const Input = (
     placeholder,
     onChange,
     onClick,
+    onKeyDown,
+    onEnter,
     ...props
   }: Inputprops,
   ref: any
 ) => {
   const className = clsx(styles.input, classNameProp);
+  function handleKeyDown(event: KeyboardEvent) {
+    if (event.key === "Enter") {
+      if (onEnter) onEnter(event);
+    }
+    if (onKeyDown) onKeyDown(event);
+  }
   return (
     <input
       className={className}
@@ -29,6 +38,7 @@ const Input = (
       ref={ref}
       type="text"
       onClick={onClick}
+      onKeyDown={handleKeyDown}
       {...props}
     />
   );
