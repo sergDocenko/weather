@@ -1,6 +1,6 @@
 import { ChartWeather } from "@/app/components/ChartWeather/ChartWeather";
-import { ModalWindow } from "@/app/components/ModalWindow/ModalWindow";
 import { useModal } from "@/app/components/ModalWindow/hooks/useModal";
+import { ModalWithPortal } from "@/app/components/ModalWithPortal/ModalWithPortal";
 import { FC, useState } from "react";
 import type { CityWeatherData } from "../../../../types";
 import styles from "./table.module.css";
@@ -31,9 +31,13 @@ export const Table: FC<TableProp> = ({ citiesWeatherData }) => {
             <th>Wind direction</th>
           </tr>
         </thead>
-        <tbody  >
+        <tbody>
           {citiesWeatherData.map((cityData, index) => (
-            <tr key={index} onClick={handleSelecteCity.bind(null, cityData)} tabIndex={2}>
+            <tr
+              key={index}
+              onClick={handleSelecteCity.bind(null, cityData)}
+              tabIndex={2}
+            >
               <td>{cityData.city}</td>
               <td>{cityData.minTemperature}</td>
               <td>{cityData.maxTemperature}</td>
@@ -42,9 +46,14 @@ export const Table: FC<TableProp> = ({ citiesWeatherData }) => {
           ))}
         </tbody>
       </table>
-      <ModalWindow isOpen={isOpenModal} close={closeModal} title={selectedCity.city} closeButton={true}>
+      <ModalWithPortal
+        isOpen={isOpenModal}
+        close={closeModal}
+        title={selectedCity.city}
+        closeButton={true}
+      >
         <ChartWeather cityWeatherData={selectedCity} />
-      </ModalWindow>
+      </ModalWithPortal>
     </div>
   );
 };
