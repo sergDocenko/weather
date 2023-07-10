@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Portal } from "../Portal/Portal";
+import  Portal  from "../Portal/Portal";
 import { ModalWindow } from "../ModalWindow/ModalWindow";
 
 type ModalWithPortalProps = {
@@ -16,7 +16,7 @@ export const ModalWithPortal: FC<ModalWithPortalProps> = ({
   ...props
 }) => {
   return (
-    <Portal>
+    <Portal selector={"body"}>
       <ModalWindow {...props}>{children}</ModalWindow>
     </Portal>
   );

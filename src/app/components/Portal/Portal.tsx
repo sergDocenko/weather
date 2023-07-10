@@ -1,12 +1,14 @@
+"use client";
+
 import { FC, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 
 type PortalProps = {
   children: React.ReactNode;
-  container?: DocumentFragment;
+  selector: string;
 };
 
-export const Portal: FC<PortalProps> = ({ children, container = document.body }) => {
+const Portal: FC<PortalProps> = ({ children, selector }) => {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -15,7 +17,9 @@ export const Portal: FC<PortalProps> = ({ children, container = document.body })
     return () => setMounted(false);
   }, []);
 
-  return mounted ? createPortal(children, container) : null;
+  return mounted
+    ? createPortal(children, document.querySelector(selector)??document.body)
+    : null;
 };
 
-
+export default Portal;

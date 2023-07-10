@@ -21,7 +21,7 @@ export const ChartWeather: FC<ChartWeatherProps> = ({
     fetchWeatherData(cityWeatherData.location, 6).then((data) => {
       setWeatherData(parseWeatherData(data));
     });
-  }, []);
+  }, [cityWeatherData.location]);
 
   const xAxisLabels = weatherData
     ? weatherData?.dailyTime.map((date) =>
