@@ -63,35 +63,14 @@ export const Dropdown: FC<DropdownProps> = ({
     [styles.dropdown_active]: active,
   });
 
-  function handleActive() {
+  function handleActive(event: any) {
+    event.stopPropagation();
     setActive(true);
   }
 
   function toggleActive(e: SyntheticEvent) {
     e.stopPropagation();
     setActive((prev) => !prev);
-  }
-
-  function handleSelectItem(option: DropdownOption, event: SyntheticEvent) {
-    let resOptions = null;
-    if (multiple) {
-      if (
-        selected.find((optionSelected) => option.value === optionSelected.value)
-      ) {
-        resOptions = selected.filter(
-          (selectedOption) => selectedOption !== option
-        );
-      } else {
-        resOptions = [...selected, option];
-      }
-    } else {
-      resOptions = [option];
-
-      setActive(false);
-    }
-    if (onChange) onChange(resOptions);
-    setSelected(resOptions);
-    event.stopPropagation();
   }
 
   function renderPlaceholder() {
@@ -109,23 +88,61 @@ export const Dropdown: FC<DropdownProps> = ({
     option.name.includes(filterValue)
   );
 
-  function handleInputKeyDown(e: KeyboardEvent) {
-   
-    if (e.key === "Enter") {
-      const option = optionsProp.find((option) => option.name === filterValue);
-      if (option) {
-        handleSelectItem(option, e);
-        setActive(false);
-      }
+  function handleBlur(event: any) {
+    event.stopPropagation();
+    setActive(false);
+  }
+
+  function handleFocus(event: any) {
+    event.stopPropagation();
+    setActive(true);
+  }
+
+  function handleInputEnter() {
+    const option = optionsProp.find((option) => option.name === filterValue);
+
+    if (!option) {
+      return;
+    }
+
+    if (multiple) {
+      setMultipleItems(option);
+      setActive(false);
+    } else {
+      setSingleItem(option);
+      setActive(false);
     }
   }
 
-  function handleKeyDown(e: KeyboardEvent) {
-    if (e.key === "Enter") {
-      setActive(true);
-    }
-    if (e.key === "Escape") {
+  function handleSelect(option: DropdownOption, event: SyntheticEvent) {
+    event.stopPropagation();
+
+    if (multiple) {
+      setMultipleItems(option);
+    } else {
+      setSingleItem(option);
       setActive(false);
+    }
+  }
+
+  function setSingleItem(option:DropdownOption) {
+    const change = [option];
+
+    setSelected(change);
+
+    if(onChange) {
+      onChange(change);
+    }
+  }
+
+  function setMultipleItems(option:DropdownOption) {
+    const found = selected.find((item) => item === option);
+    const change = found ? selected.filter((item) => item !== option) : [...selected, option];
+
+    setSelected(change);
+
+    if(onChange) {
+      onChange(change);
     }
   }
 
@@ -133,9 +150,10 @@ export const Dropdown: FC<DropdownProps> = ({
     <div
       className={className}
       onClick={handleActive}
-      onKeyDown={handleKeyDown}
       ref={dropdownRef}
       tabIndex={0}
+      onFocus={handleFocus}
+      onBlur={handleBlur}
     >
       <div className={styles.dropdown__head}>
         {active && search ? (
@@ -144,7 +162,7 @@ export const Dropdown: FC<DropdownProps> = ({
               className={styles["dropdown__control-input"]}
               onChange={handleInputChange}
               ref={inputRef}
-              onKeyDown={handleInputKeyDown}
+              onEnter={handleInputEnter}
             />
           </div>
         ) : (
@@ -170,7 +188,7 @@ export const Dropdown: FC<DropdownProps> = ({
               <li
                 key={index}
                 className={className}
-                onClick={handleSelectItem.bind(null, option)}
+                onClick={handleSelect.bind(null, option)}
               >
                 {option.name}
               </li>
