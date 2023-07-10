@@ -1,4 +1,4 @@
-html{
+html {
   font-size: 10px;
 }
 
@@ -8,10 +8,24 @@ body {
   margin: 0;
   background-color: var(--body-bg);
 }
+h2 {
+  font-size: 2rem;
+}
+h3 {
+  font-size: 1.8rem;
+}
+@keyframes animation-opacity {
+  0% {
+    opacity: 0;
+  }
 
+  100% {
+    opacity: 1;
+  }
+}
 
-@media screen and (max-width:500px) {
-  html{
+@media screen and (max-width: 500px) {
+  html {
     font-size: 9px;
   }
 }

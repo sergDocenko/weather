@@ -1,12 +1,7 @@
 "use client";
 import React, { FC, useState } from "react";
-import type {
-  CityWeatherData,
-  CountriesData,
-  CountryData,
-  DropdownOption,
-} from "../../types";
-import { Dropdown } from "../Dropdown/Dropdown";
+import type { CityWeatherData, CountriesData, CountryData } from "../../types";
+import { Dropdown, DropdownOption } from "../Dropdown/Dropdown";
 import { Actions } from "./componets/Actions/Actions";
 import { Table } from "./componets/Table/Table";
 import { countryFilter, temperatureFilter } from "./filters";
@@ -73,7 +68,7 @@ export const WeatherTable: FC<WeatherTableProp> = ({
           onChange={handleSelectMinTemperature}
         />
         <Dropdown
-          options={getMaxTemperatureOptions()}
+          options={getMaxTemperatureOptions().reverse()}
           placeholder="Max"
           search={true}
           onChange={handleSelectMaxTemperature}

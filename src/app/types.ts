@@ -9,22 +9,28 @@ export type MinMaxTemperature = {
   min: number;
   max: number;
 };
-export type CityWeatherData = {
-  city: string;
+
+export type Location = {
+  latitude: string;
+  longitude: string;
+};
+export type WeatherData = {
   minTemperature: number[];
   maxTemperature: number[];
   winddirection: number[];
   dailyTime: string[];
-  countryCode: string;
 };
+
+export interface CityWeatherData extends WeatherData {
+  city: string;
+  countryCode: string;
+  location: Location;
+}
 
 export type CityData = {
   countryCode: string;
   city: string;
-  location: {
-    latitude: string;
-    longitude: string;
-  };
+  location: Location;
 };
 export type FetchDefaultParams = {
   daily?: string;
@@ -36,8 +42,4 @@ export type FetchDefaultParams = {
 export type MinMaxtemperature = {
   min: number;
   max: number;
-};
-export type DropdownOption = {
-  name: string;
-  value: string;
 };

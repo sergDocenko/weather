@@ -1,4 +1,4 @@
-import type { CityData, DropdownOption } from "./types";
+import type { DropdownOption } from "./components/Dropdown/Dropdown";
 
 export function getOptionsFromRange(
   min: number,
@@ -17,7 +17,7 @@ export function getURL(base: string, params: { [key: string]: string }) {
   );
   return resURL;
 }
-export function parseCityData(cityAllData: any) {
+export function parseWeatherData(cityAllData: any) {
   const res = {
     minTemperature: [],
     maxTemperature: [],
@@ -38,17 +38,23 @@ export function getPreviosDate(daysCount: number) {
 export function getNormalizeDate(date: Date) {
   return date.toISOString().split("T")[0];
 }
-// export function getAllCities(data: any): CityData[] {
-//   const resArray: any = [];
-//   for (let key in data) {
-//     const cityData:CityData={
-//       countryCode:key,
-//       ...data[key]
-
-//     }
-//     console.log(cityData,"wqjdnijqwni");
-
-//     resArray.push(...data[key]);
-//   }
-//   return resArray;
-// }
+export function getWeekDay(dayNumber: number): string {
+  switch (dayNumber) {
+    case 0:
+      return "Sun";
+    case 1:
+      return "Mon";
+    case 2:
+      return "Tue";
+    case 3:
+      return "Wed";
+    case 4:
+      return "Thu";
+    case 5:
+      return "Fri";
+    case 6:
+      return "Sat";
+    default:
+      return "";
+  }
+}

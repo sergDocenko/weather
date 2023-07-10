@@ -1,6 +1,6 @@
-import React, { useState } from "react";
 import { getOptionsFromRange } from "@/app/utils";
-import type { DropdownOption } from "@/app/types";
+import { useState } from "react";
+import type { DropdownOption } from "../../Dropdown/Dropdown";
 
  const minMaxConf = {
   min: -80,

@@ -1,8 +1,9 @@
-import React, { FC } from "react";
-import styles from "./table.module.css";
-import type { CityWeatherData } from "../../../../types";
-import { useModal } from "@/app/components/ModalWindow/hooks/useModal";
+import { ChartWeather } from "@/app/components/ChartWeather/ChartWeather";
 import { ModalWindow } from "@/app/components/ModalWindow/ModalWindow";
+import { useModal } from "@/app/components/ModalWindow/hooks/useModal";
+import { FC, useState } from "react";
+import type { CityWeatherData } from "../../../../types";
+import styles from "./table.module.css";
 
 type TableProp = {
   citiesWeatherData: CityWeatherData[];
@@ -10,11 +11,13 @@ type TableProp = {
 
 export const Table: FC<TableProp> = ({ citiesWeatherData }) => {
   const { openModal, closeModal, isOpen: isOpenModal } = useModal();
+  const [selectedCity, setSelectedCity] = useState<CityWeatherData>(
+    citiesWeatherData[0]
+  );
 
-  function modalToggle() {
-    if (isOpenModal) {
-      closeModal();
-    } else openModal();
+  function handleSelecteCity(cityData: CityWeatherData) {
+    setSelectedCity(cityData);
+    openModal();
   }
 
   return (
@@ -28,9 +31,9 @@ export const Table: FC<TableProp> = ({ citiesWeatherData }) => {
             <th>Wind direction</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody  >
           {citiesWeatherData.map((cityData, index) => (
-            <tr key={index} onClick={modalToggle}>
+            <tr key={index} onClick={handleSelecteCity.bind(null, cityData)} tabIndex={2}>
               <td>{cityData.city}</td>
               <td>{cityData.minTemperature}</td>
               <td>{cityData.maxTemperature}</td>
@@ -39,8 +42,8 @@ export const Table: FC<TableProp> = ({ citiesWeatherData }) => {
           ))}
         </tbody>
       </table>
-      <ModalWindow isOpen={isOpenModal} close={closeModal}>
-        <h1>Modal</h1>
+      <ModalWindow isOpen={isOpenModal} close={closeModal} title={selectedCity.city} closeButton={true}>
+        <ChartWeather cityWeatherData={selectedCity} />
       </ModalWindow>
     </div>
   );

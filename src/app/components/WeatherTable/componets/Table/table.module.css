@@ -8,10 +8,11 @@
 
 .table {
   display: flex;
-  flex-direction: column;
+  flex-direction: column;  
   align-items: flex-start;
   color: var(--color-white);
   font-size: 15px;
+  font-family:  Helvetica, sans-serif;
 }
 .tr_h {
   width: 100%;
@@ -37,6 +38,7 @@
 
 .table tbody {
   display: grid;
+  gap: 1px;
   width: 100%;
 }
 

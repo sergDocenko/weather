@@ -1,8 +1,6 @@
 import { Metadata } from "next";
 import "./globals.css";
 import "./variables.css";
-import { Inter } from "next/font/google";
-
 
 export const metadata: Metadata = {
   title: "WEATHER",
@@ -16,10 +14,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
-            
-        {children}
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

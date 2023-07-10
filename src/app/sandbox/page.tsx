@@ -1,4 +1,5 @@
 import { Dropdown } from "../components/Dropdown/Dropdown";
+import { ChartBar } from "../components/ChartBar/ChartBar";
 
 const optionsMock = [
   {
@@ -18,12 +19,13 @@ const optionsMock = [
     value: "name4",
   },
 ];
+
 export default function Sandbox() {
   return (
     <>
      <Dropdown options={[]} />
       <Dropdown options={optionsMock} placeholder="Country" />
-     
+     {/* <ChartBar xAxisLabels={xAxisLabels} barsData={barsData} /> */}
     </>
   );
 }

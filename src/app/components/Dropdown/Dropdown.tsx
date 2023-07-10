@@ -1,9 +1,10 @@
 "use client";
-import type { DropdownOption } from "@/app/types";
+// import type { DropdownOption } from "@/app/types";
 import clsx from "clsx";
 import {
   FC,
   SyntheticEvent,
+  KeyboardEvent,
   useCallback,
   useEffect,
   useRef,
@@ -11,6 +12,11 @@ import {
 } from "react";
 import Input from "../Input/Input";
 import styles from "./dropdown.module.css";
+
+export type DropdownOption = {
+  name: string;
+  value: string;
+};
 
 type DropdownProps = {
   options: DropdownOption[];
@@ -42,10 +48,6 @@ export const Dropdown: FC<DropdownProps> = ({
   }, []);
 
   useEffect(() => {
-    if (onChange) onChange(selected);
-  }, [selected]);
-
-  useEffect(() => {
     if (active) {
       inputRef?.current?.focus();
     } else setFilterValue("");
@@ -71,21 +73,25 @@ export const Dropdown: FC<DropdownProps> = ({
   }
 
   function handleSelectItem(option: DropdownOption, event: SyntheticEvent) {
-    event.stopPropagation();
-    setSelected([option]);
-    setActive(false);
-  }
-
-  function handleSelectMultipleItems(option: DropdownOption) {
-    if (
-      selected.find((optionSelected) => option.value === optionSelected.value)
-    ) {
-      setSelected(
-        selected.filter((selectedOption) => selectedOption !== option)
-      );
+    let resOptions = null;
+    if (multiple) {
+      if (
+        selected.find((optionSelected) => option.value === optionSelected.value)
+      ) {
+        resOptions = selected.filter(
+          (selectedOption) => selectedOption !== option
+        );
+      } else {
+        resOptions = [...selected, option];
+      }
     } else {
-      setSelected([...selected, option]);
+      resOptions = [option];
+
+      setActive(false);
     }
+    if (onChange) onChange(resOptions);
+    setSelected(resOptions);
+    event.stopPropagation();
   }
 
   function renderPlaceholder() {
@@ -96,15 +102,41 @@ export const Dropdown: FC<DropdownProps> = ({
 
   function handleInputChange(event: SyntheticEvent) {
     const input = event.target as HTMLInputElement;
-    setFilterValue(input.value);
+    setFilterValue(input.value.trim());
   }
 
   const options = optionsProp.filter((option) =>
     option.name.includes(filterValue)
   );
 
+  function handleInputKeyDown(e: KeyboardEvent) {
+   
+    if (e.key === "Enter") {
+      const option = optionsProp.find((option) => option.name === filterValue);
+      if (option) {
+        handleSelectItem(option, e);
+        setActive(false);
+      }
+    }
+  }
+
+  function handleKeyDown(e: KeyboardEvent) {
+    if (e.key === "Enter") {
+      setActive(true);
+    }
+    if (e.key === "Escape") {
+      setActive(false);
+    }
+  }
+
   return (
-    <div className={className} onClick={handleActive} ref={dropdownRef}>
+    <div
+      className={className}
+      onClick={handleActive}
+      onKeyDown={handleKeyDown}
+      ref={dropdownRef}
+      tabIndex={0}
+    >
       <div className={styles.dropdown__head}>
         {active && search ? (
           <div className={styles.dropdown__control}>
@@ -112,6 +144,7 @@ export const Dropdown: FC<DropdownProps> = ({
               className={styles["dropdown__control-input"]}
               onChange={handleInputChange}
               ref={inputRef}
+              onKeyDown={handleInputKeyDown}
             />
           </div>
         ) : (
@@ -137,11 +170,7 @@ export const Dropdown: FC<DropdownProps> = ({
               <li
                 key={index}
                 className={className}
-                onClick={
-                  multiple
-                    ? handleSelectMultipleItems.bind(null, option)
-                    : handleSelectItem.bind(null, option)
-                }
+                onClick={handleSelectItem.bind(null, option)}
               >
                 {option.name}
               </li>
