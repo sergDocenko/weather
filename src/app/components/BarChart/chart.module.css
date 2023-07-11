@@ -1,0 +1,11 @@
+.chart{
+    stroke:white;
+    /* fill:red; */
+    
+    border-radius: 10px;
+}
+.chart rect{
+    fill:red;
+    /* ry: 15px; */
+    /* rx: 15px; */
+}

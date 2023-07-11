@@ -35,7 +35,7 @@ export const ChartWeather: FC<ChartWeatherProps> = ({
   }, [cityWeatherData.location, daysPeriod]);
 
   const handleChangeDaysPeriod = useCallback((options: DropdownOption[]) => {
-    setDaysPeriod(Number(options[0].value)-1);
+    setDaysPeriod(Number(options[0].value) - 1);
   }, []);
 
   const xAxisLabels = weatherData
@@ -48,6 +48,7 @@ export const ChartWeather: FC<ChartWeatherProps> = ({
       <div className={styles.chart__actions}>
         <h3 className={styles.chart__actions__label}>Сhoose a period</h3>
         <Dropdown
+          className={styles.chart__actions__dropdown}
           options={options}
           placeholder="Days"
           onChange={handleChangeDaysPeriod}

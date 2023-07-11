@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect } from "react";
+import styles from "./chart.module.css"
 
 import {
   select,
@@ -8,6 +9,7 @@ import {
   groupSort,
   max,
   axisBottom,
+  transition,
   create,
   axisLeft,
 } from "d3";
@@ -40,6 +42,15 @@ const data = [
   { letter: "Y", frequency: 0.01974 },
   { letter: "Z", frequency: 0.00074 },
 ];
+function rightRoundedRect(x:any, y:any , width:any, height:any, radius:any) {
+  return "M" + x + "," + y
+       + "h" + (width - radius)
+       + "a" + radius + "," + radius + " 0 0 1 " + radius + "," + radius
+       + "v" + (height - 2 * radius)
+       + "a" + radius + "," + radius + " 0 0 1 " + -radius + "," + radius
+       + "h" + (radius - width)
+       + "z";
+}
 
 function chart() {
   // Declare the chart dimensions and margins.
@@ -49,56 +60,78 @@ function chart() {
   const marginRight = 0;
   const marginBottom = 30;
   const marginLeft = 40;
+  const marginBar = 5;
 
   // Declare the x (horizontal position) scale.
   const x = scaleBand()
     .domain(
-    
-      groupSort(
-        data,
-        ([d]) => -d.frequency,
-        (d) => d.letter
-      )
+      data.map((item) => item.letter)
+      // groupSort(
+      //   data,
+      //   ([d]) => -d.frequency,
+      //   (d) => d.letter
+      // )
     ) // descending frequency
     .range([marginLeft, width - marginRight])
     .padding(0.1);
 
   // Declare the y (vertical position) scale.
   const y = scaleLinear()
-    .domain([0, 2])
+    .domain([0, 20])
     .range([height - marginBottom, marginTop]);
 
   // Create the SVG container.
+  
   const svg = select("#chart")
+ 
     .append("svg")
+    .attr("class", `${styles.chart}`)  
+     
     .attr("width", width)
     .attr("height", height)
     .attr("viewBox", [0, 0, width, height])
+    
     .attr("style", "max-width: 100%; height: auto;");
 
+    
+
   // Add a rect for each bar.
-  svg.append("g")
-      .attr("fill", "steelblue")
-    .selectAll()
+  svg.selectAll("g")  
+    .append("g")    
+    // .attr("d", rightRoundedRect(-240, -120, 480, 240, 20))
+    // .attr("fill", "steelblue")    
     .data(data)
+    
     .join("rect")
-      .attr("x", (d,i) => (i+1)*60)
-      .attr("y", (d) => y(d.frequency))
-      .attr("height", (d) => y(0) - y(d.frequency))
-      .attr("width", 40);
+    
+    .attr(
+      "x",
+      (d, i) =>
+        i * ((width - marginLeft - marginRight) / data.length) +
+        marginLeft +
+        marginBar
+    )
+    .attr("y", (d) => y(d.frequency * 100))
+    .attr("height", (d) => y(0) - y(d.frequency * 100))
+    .attr(
+      "width",
+      (width - marginLeft - marginRight) / data.length - marginBar
+    );
 
   // Add the x-axis and label.
   svg
     .append("g")
     .attr("transform", `translate(0,${height - marginBottom})`)
-    .call(axisBottom(x).tickSizeOuter(0));
+
+    .call(axisBottom(x).tickSizeOuter(0))
+    .call((g) => g.select(".domain").remove());
 
   // Add the y-axis and label, and remove the domain line.
   svg
     .append("g")
     .attr("transform", `translate(${marginLeft},0)`)
-    .call(axisLeft(y).tickFormat((y: any) => (y * 100).toFixed()))
-    // .call((g) => g.select(".domain").remove())
+    .call(axisLeft(y).tickFormat((y: any) => y.toFixed()))
+    .call((g) => g.select(".domain").remove())
     .call((g) =>
       g
         .append("text")
@@ -151,7 +184,7 @@ function drawChart() {
 export const BarChart = () => {
   useEffect(() => {
     // drawChart();
-    chart()
+    chart();
   }, []);
 
   return <div id="chart">eubuwecbuwhec</div>;

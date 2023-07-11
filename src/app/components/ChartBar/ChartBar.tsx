@@ -1,5 +1,5 @@
 "use client";
-import React, { FC } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { options, data } from "./config";
 import {
   Chart as ChartJS,
@@ -26,10 +26,13 @@ export const ChartBar: FC<ChartBarProps> = ({
   width = 430,
   height = 410,
 }) => {
-  const chartData: any = data;
-  chartData.labels = xAxisLabels;  
-  chartData.datasets[0].data = barsData;
-console.log(barsData);
+  let chart: any = data;
+  const [chartData, setChartData] = useState<any>(chart);
+  chart.datasets[0].data = barsData;
+  chart.labels = xAxisLabels;
+  useEffect(() => {
+    setChartData({ ...chart, datasets: [...chart.datasets] });
+  }, [barsData]);
 
   return (
     <Bar options={options} data={chartData} width={width} height={height} />

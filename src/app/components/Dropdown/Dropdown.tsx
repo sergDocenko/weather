@@ -61,8 +61,8 @@ const DropDown: FC<DropdownProps> = ({
   }, [handleDocumentClick]);
 
   const className = clsx({
-    [styles.dropdown]: true,
-    classNameProp: true,
+    classNameProp,
+    [styles.dropdown]: true,   
     [styles.dropdown_active]: active,
   });
 
@@ -73,6 +73,13 @@ const DropDown: FC<DropdownProps> = ({
   function toggleActive(e: SyntheticEvent) {
     e.stopPropagation();
     setActive((prev) => !prev);
+  }
+
+  function handleBlur(e:SyntheticEvent){
+    // e.stopPropagation()
+    console.log(e.target);
+    
+    setActive(false);
   }
 
   function handleSelectItem(option: DropdownOption, event?: SyntheticEvent) {
@@ -135,6 +142,7 @@ const DropDown: FC<DropdownProps> = ({
       className={className}
       onClick={handleActive}
       onKeyDown={handleKeyDown}
+      onBlur={handleBlur}
       ref={dropdownRef}
       tabIndex={0}
     >

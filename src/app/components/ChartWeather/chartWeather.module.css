@@ -12,7 +12,8 @@
 .chart__actions__label{
   line-height: 0.5rem;
 }
-/* .chart__actions__dropdown{
-height: 3rem;
-border:1px solid red;
-} */
+.chart__actions>div{
+/* height: 3rem; */
+/* border:1px solid red; */
+padding: 0.6rem 1rem;
+}
