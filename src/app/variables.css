@@ -9,6 +9,6 @@
   --webkit-scrollbar-width: 0.9rem;
   --webkit-scrollbar-thumb-border: 1px solid var(--body-bg);
 
-  --animation-opacity: animation-opacity 0.5s forwards;
+  --animation-opacity: animation-opacity 0.4s forwards;
   --transition: all 1400ms ease;
 }

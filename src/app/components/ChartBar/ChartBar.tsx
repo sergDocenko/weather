@@ -1,15 +1,15 @@
 "use client";
+import React, { FC, useEffect, useState } from "react";
+import { options, data } from "./config";
 import {
-  BarElement,
-  CategoryScale,
   Chart as ChartJS,
-  Legend,
+  CategoryScale,
   LinearScale,
+  BarElement,
   Tooltip,
+  Legend,
 } from "chart.js";
-import { FC } from "react";
 import { Bar } from "react-chartjs-2";
-import { data, options } from "./config";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
@@ -26,10 +26,19 @@ export const ChartBar: FC<ChartBarProps> = ({
   width = 430,
   height = 410,
 }) => {
-  const chartData: any = data;
-  chartData.datasets[0].data = barsData;
-  chartData.labels = xAxisLabels;
-  chartData.datasets = [...chartData.datasets];
+  const chart: any = data;
+  
+  const [chartData, setChartData] = useState<any>(chart);
+
+  useEffect(() => {
+    chart.datasets[0].data = barsData;
+    chart.labels = xAxisLabels;
+    setChartData({
+      ...chart,
+      datasets: [...chart.datasets],
+    });
+  }, [barsData]);
+
   return (
     <Bar options={options} data={chartData} width={width} height={height} />
   );
