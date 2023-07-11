@@ -5,7 +5,7 @@ import styles from "./page.module.css";
 import { fetchAllCitiesData } from "./services/weatherService";
 
 export default async function Home() {
-  const allCitiesWeatherData = await fetchAllCitiesData(citiesData, 0);
+  const allCitiesWeatherData = await fetchAllCitiesData(citiesData, 1);
 
   return (
     <main className={styles.main}>

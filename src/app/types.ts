@@ -5,11 +5,6 @@ export type CountryData = {
 
 export type CountriesData = CountryData[];
 
-export type MinMaxTemperature = {
-  min: number;
-  max: number;
-};
-
 export type Location = {
   latitude: string;
   longitude: string;
@@ -39,7 +34,7 @@ export type FetchDefaultParams = {
   end_date?: string;
 };
 
-export type MinMaxtemperature = {
+export type MinMaxTemperature = {
   min: number;
   max: number;
 };

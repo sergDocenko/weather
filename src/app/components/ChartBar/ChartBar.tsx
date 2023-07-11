@@ -27,7 +27,12 @@ export const ChartBar: FC<ChartBarProps> = ({
   height = 410,
 }) => {
   const chart: any = data;
-  
+  const margin = window.innerWidth * 0.05;
+  if (window.innerWidth <= width + margin) {
+    width = window.innerWidth - margin;
+    height = height - margin;
+  }
+
   const [chartData, setChartData] = useState<any>(chart);
 
   useEffect(() => {
@@ -40,6 +45,6 @@ export const ChartBar: FC<ChartBarProps> = ({
   }, [barsData]);
 
   return (
-    <Bar options={options} data={chartData} width={width} height={height} />
+    <Bar options={options} data={chartData} height={height} width={width} />
   );
 };

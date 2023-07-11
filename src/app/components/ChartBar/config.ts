@@ -24,7 +24,7 @@ export const options:any = {
       },
 
       ticks: {
-        padding: 10,
+        padding: 5,
         color: "white",
       },
 

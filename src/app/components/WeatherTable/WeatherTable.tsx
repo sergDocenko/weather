@@ -1,5 +1,5 @@
 "use client";
-import React, { FC, useState } from "react";
+import React, { FC, useCallback, useState } from "react";
 import type { CityWeatherData, CountriesData, CountryData } from "../../types";
 import { Dropdown, DropdownOption } from "../Dropdown/Dropdown";
 import { Actions } from "./componets/Actions/Actions";
@@ -36,20 +36,20 @@ export const WeatherTable: FC<WeatherTableProp> = ({
     return weatherData;
   }
 
-  function handleSelectCountry(options: CountriesData) {
+  const handleSelectCountry = useCallback((options: CountriesData) => {
     if (options.length) {
       setSelectedCountries(options);
     } else {
       setSelectedCountries(countries);
     }
-  }
+  }, [countries]);
 
-  function handleSelectMinTemperature(option: DropdownOption[]) {
+  const handleSelectMinTemperature = useCallback((option: DropdownOption[]) => {
     handleSetMinTemperature(Number(option[0]?.value));
-  }
-  function handleSelectMaxTemperature(option: DropdownOption[]) {
+  }, [handleSetMinTemperature]);
+  const handleSelectMaxTemperature = useCallback((option: DropdownOption[]) => {
     handleSetMaxTemperature(Number(option[0]?.value));
-  }
+  }, [handleSetMaxTemperature]);
 
   return (
     <div className={styles.weather_container}>

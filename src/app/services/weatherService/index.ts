@@ -2,6 +2,7 @@ import type {
   FetchDefaultParams,
   CityWeatherData,
   CityData,
+  Location
 } from "@/app/types";
 import {
   getPreviosDate,
@@ -20,8 +21,8 @@ const defaultParam: FetchDefaultParams = {
 };
 
 export async function fetchWeatherData(
-  location: { latitude: string; longitude: string },
-  dayCount: number = 6,
+  location: Location,
+  dayCount: number = 7,
   defaultParams: FetchDefaultParams = {
     ...defaultParam,
   },

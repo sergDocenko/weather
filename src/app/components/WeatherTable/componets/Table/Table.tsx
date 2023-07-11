@@ -20,13 +20,6 @@ export const Table: FC<TableProp> = ({ citiesWeatherData }) => {
     openModal();
   }
 
-  type columnData = {
-    headlabel: string;
-    cells: string[];
-  };
-
-  type tabledataType = columnData[];
-
   return (
     <div className={styles.table_container}>
       <table className={styles.table}>

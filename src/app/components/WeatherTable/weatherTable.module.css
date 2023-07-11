@@ -1,11 +1,11 @@
 .weather_container {
   display: flex;
-  width: 641px;
-  padding: 25px 16px 18px 16px;
+  width: 64.1rem;
+  padding: 2.5rem 1.6rem 1.8rem 1.6rem;
   flex-direction: column;
   justify-content: flex-end;
   align-items: flex-start;
-  gap: 25px;
+  gap: 2.5rem;
   border-radius: var(--border-radius-1);
   background-color: var(--gray-black);
 }

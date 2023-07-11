@@ -27,7 +27,7 @@ export const ChartWeather: FC<ChartWeatherProps> = ({
 }) => {
   const className = clsx(classNameProp, styles["chart"]);
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
-  const [daysPeriod, setDaysPeriod] = useState(6);
+  const [daysPeriod, setDaysPeriod] = useState(7);
   useEffect(() => {
     fetchWeatherData(cityWeatherData.location, daysPeriod).then((data) => {
       setWeatherData(parseWeatherData(data));
@@ -35,7 +35,7 @@ export const ChartWeather: FC<ChartWeatherProps> = ({
   }, [cityWeatherData.location, daysPeriod]);
 
   const handleChangeDaysPeriod = useCallback((options: DropdownOption[]) => {
-    setDaysPeriod(Number(options[0].value) - 1);
+    setDaysPeriod(Number(options[0].value));
   }, []);
 
   const xAxisLabels = weatherData
@@ -60,7 +60,7 @@ export const ChartWeather: FC<ChartWeatherProps> = ({
         <ChartBar
           xAxisLabels={xAxisLabels}
           barsData={weatherData.maxTemperature}
-          height={340}
+          height={340}          
         />
       )}
     </div>

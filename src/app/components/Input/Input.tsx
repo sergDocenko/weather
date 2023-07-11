@@ -1,4 +1,10 @@
-import React, { FC, forwardRef, SyntheticEvent, KeyboardEvent,LegacyRef } from "react";
+import React, {
+  FC,
+  forwardRef,
+  SyntheticEvent,
+  KeyboardEvent,
+  LegacyRef,
+} from "react";
 import clsx from "clsx";
 import styles from "./input.module.css";
 
@@ -6,7 +12,6 @@ type Inputprops = {
   className?: string;
   placeholder?: string;
   onChange: (event: SyntheticEvent) => void;
-  onClick?: (event: SyntheticEvent) => void;
   onKeyDown?: (event: KeyboardEvent) => void;
   onEnter?: (event: KeyboardEvent) => void;
 };
@@ -16,7 +21,6 @@ const Input = (
     className: classNameProp,
     placeholder,
     onChange,
-    onClick,
     onKeyDown,
     onEnter,
     ...props
@@ -37,7 +41,6 @@ const Input = (
       placeholder={placeholder}
       ref={ref}
       type="text"
-      onClick={onClick}
       onKeyDown={handleKeyDown}
       {...props}
     />

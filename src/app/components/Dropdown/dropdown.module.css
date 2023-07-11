@@ -30,8 +30,7 @@
   box-sizing: border-box;
 }
 .dropdown__list {
-  background-color: var(--gray);
-  /* width: 100%; */
+  background-color: var(--gray);  
   z-index: 100;
   list-style: none;
   position: absolute;

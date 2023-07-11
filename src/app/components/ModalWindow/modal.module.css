@@ -25,11 +25,17 @@
 }
 .modal__container__header__close {
   background-color: transparent;
-  border-radius: 0.5rem;
+  border-radius: 0.6rem;
   color: inherit;
   cursor: pointer;
   font-size: 1.8rem;
 }
 .modal__container__header__close:active {
   color: var(--gray);
+}
+@media screen and (max-width: 500px) {
+  .modal__container {
+    padding: 0.6rem 1rem 1rem 1rem;
+   
+  }
 }
