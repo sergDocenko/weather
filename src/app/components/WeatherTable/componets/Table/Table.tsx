@@ -20,14 +20,12 @@ export const Table: FC<TableProp> = ({ citiesWeatherData }) => {
     openModal();
   }
 
-type columnData={
-  headlabel:string,
-  cells:string[]
-}
+  type columnData = {
+    headlabel: string;
+    cells: string[];
+  };
 
-type tabledataType=columnData[]
-
-
+  type tabledataType = columnData[];
 
   return (
     <div className={styles.table_container}>
@@ -42,11 +40,7 @@ type tabledataType=columnData[]
         </thead>
         <tbody>
           {citiesWeatherData.map((cityData, index) => (
-            <tr
-              key={index}
-              onClick={handleSelecteCity.bind(null, cityData)}
-              tabIndex={2}
-            >
+            <tr key={index} onClick={handleSelecteCity.bind(null, cityData)}>
               <td>{cityData.city}</td>
               <td>{cityData.minTemperature}</td>
               <td>{cityData.maxTemperature}</td>

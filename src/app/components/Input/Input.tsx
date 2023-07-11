@@ -1,4 +1,4 @@
-import React, { FC, forwardRef, SyntheticEvent, KeyboardEvent } from "react";
+import React, { FC, forwardRef, SyntheticEvent, KeyboardEvent,LegacyRef } from "react";
 import clsx from "clsx";
 import styles from "./input.module.css";
 
@@ -21,7 +21,7 @@ const Input = (
     onEnter,
     ...props
   }: Inputprops,
-  ref: any
+  ref: LegacyRef<HTMLInputElement>
 ) => {
   const className = clsx(styles.input, classNameProp);
   function handleKeyDown(event: KeyboardEvent) {

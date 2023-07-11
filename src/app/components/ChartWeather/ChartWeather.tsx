@@ -52,6 +52,7 @@ export const ChartWeather: FC<ChartWeatherProps> = ({
           options={options}
           placeholder="Days"
           onChange={handleChangeDaysPeriod}
+          tabIndex={1}
         />
       </div>
 

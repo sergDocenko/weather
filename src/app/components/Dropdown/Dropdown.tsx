@@ -1,5 +1,5 @@
 "use client";
-// import type { DropdownOption } from "@/app/types";
+
 import clsx from "clsx";
 import React, {
   FC,
@@ -26,6 +26,7 @@ type DropdownProps = {
   className?: string;
   onChange?: (selectedOptions: DropdownOption[]) => void;
   selectedProp?: DropdownOption[];
+  tabIndex?: number;
 };
 
 const DropDown: FC<DropdownProps> = ({
@@ -36,6 +37,7 @@ const DropDown: FC<DropdownProps> = ({
   className: classNameProp,
   onChange,
   selectedProp = [],
+  tabIndex = 0,
 }) => {
   const [active, setActive] = useState(false);
   const [selected, setSelected] = useState<DropdownOption[]>(selectedProp);
@@ -62,9 +64,12 @@ const DropDown: FC<DropdownProps> = ({
 
   const className = clsx({
     classNameProp,
-    [styles.dropdown]: true,   
+    [styles.dropdown]: true,
     [styles.dropdown_active]: active,
   });
+  const options = optionsProp.filter((option) =>
+    option.name.includes(filterValue)
+  );
 
   function handleActive() {
     setActive(true);
@@ -74,34 +79,31 @@ const DropDown: FC<DropdownProps> = ({
     e.stopPropagation();
     setActive((prev) => !prev);
   }
+  function setSingleOption(option: DropdownOption) {
+    const resOptions = [option];
+    setSelected(resOptions);
+    if (onChange) onChange(resOptions);
+  }
 
-  function handleBlur(e:SyntheticEvent){
-    // e.stopPropagation()
-    console.log(e.target);
-    
-    setActive(false);
+  function setMultipleOptions(option: DropdownOption) {
+    const found = selected.find(
+      (optionSelected) => option.value === optionSelected.value
+    );
+    const resOptions: DropdownOption[] = found
+      ? selected.filter((selectedOption) => selectedOption !== option)
+      : [...selected, option];
+    if (onChange) onChange(resOptions);
+    setSelected(resOptions);
   }
 
   function handleSelectItem(option: DropdownOption, event?: SyntheticEvent) {
     event && event.stopPropagation();
-    let resOptions = null;
     if (multiple) {
-      if (
-        selected.find((optionSelected) => option.value === optionSelected.value)
-      ) {
-        resOptions = selected.filter(
-          (selectedOption) => selectedOption !== option
-        );
-      } else {
-        resOptions = [...selected, option];
-      }
+      setMultipleOptions(option);
     } else {
-      resOptions = [option];
-
+      setSingleOption(option);
       setActive(false);
     }
-    if (onChange) onChange(resOptions);
-    setSelected(resOptions);
   }
 
   function renderPlaceholder() {
@@ -114,10 +116,6 @@ const DropDown: FC<DropdownProps> = ({
     const input = event.target as HTMLInputElement;
     setFilterValue(input.value.trim());
   }
-
-  const options = optionsProp.filter((option) =>
-    option.name.includes(filterValue)
-  );
 
   function handleInputKeyEnter(event: KeyboardEvent) {
     event.stopPropagation();
@@ -142,9 +140,8 @@ const DropDown: FC<DropdownProps> = ({
       className={className}
       onClick={handleActive}
       onKeyDown={handleKeyDown}
-      onBlur={handleBlur}
       ref={dropdownRef}
-      tabIndex={0}
+      tabIndex={tabIndex}
     >
       <div className={styles.dropdown__head}>
         {active && search ? (
