@@ -68,7 +68,7 @@ const DropDown: FC<DropdownProps> = ({
     [styles.dropdown_active]: active,
   });
   const options = optionsProp.filter((option) =>
-    option.name.includes(filterValue)
+    option.name.toLowerCase().includes(filterValue.toLowerCase())
   );
 
   function handleActive() {
