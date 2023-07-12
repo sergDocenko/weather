@@ -1,8 +1,6 @@
 [
   { "name": "Ukraine", "value": "UA" },
   { "name": "Spain", "value": "ES" },
-  { "name": "Italy", "value": "IT" },
-  { "name": "Kraine", "value": "AU" },
-  { "name": "Pain", "value": "SE" }
-  
+  { "name": "Italy", "value": "IT" }, 
+  { "name": "Pain", "value": "SE" }  
 ]
